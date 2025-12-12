@@ -6,7 +6,7 @@ import { GROUP_LIST, GROUP_INFO } from "./group";
 import { ITEM_LIST, ITEM_INFO, ITEM_PRODUCTS } from "./item";
 import { PRODUCT_LIST, PRODUCT_INFO, PRODUCT_ITEMS } from "./product";
 import { REGION_LIST, REGION_INFO } from "./region";
-import { ACCOUNT_LIST } from "./account";
+import { ACCOUNT_INFO } from "./account";
 import { ORDER_VERIFY, ORDER_LIST, ORDER_DETAILS, ORDER_CREATE } from "./order";
 
 /* types */
@@ -152,11 +152,11 @@ export class CloudTopup {
   };
 
   account = {
-    list: (): Promise<{
+    info: (): Promise<{
       success: boolean;
       message: string;
-      data?: AccountT[];
-    }> => ACCOUNT_LIST(this.HOST, this.API_KEY, this.LOGGER)
+      data?: AccountT;
+    }> => ACCOUNT_INFO(this.HOST, this.API_KEY, this.LOGGER)
   };
 
   order = {

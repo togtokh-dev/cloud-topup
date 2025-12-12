@@ -5,11 +5,11 @@ import type { AccountT } from "./types";
 
 /* ----------------------------- GET /account ----------------------------- */
 // curl --location 'https://api-staging.cloudhub.mn/topup/v1/public/account' --header 'x-api-key: ...'
-export const ACCOUNT_LIST = async (
+export const ACCOUNT_INFO = async (
   HOST: string,
   API_KEY: string,
   LOGGER = false
-): Promise<{ success: boolean; message: string; data?: AccountT[] }> => {
+): Promise<{ success: boolean; message: string; data?: AccountT }> => {
   try {
     const res = await axiosMasterLogger(
       {
@@ -30,12 +30,12 @@ export const ACCOUNT_LIST = async (
       return { success: true, message: res.message, data: res.data };
     }
 
-    return { success: false, message: res?.message || "failed", data: [] };
+    return { success: false, message: res?.message || "failed", data: null };
   } catch (error) {
-    return { success: false, message: parseErr(error), data: [] };
+    return { success: false, message: parseErr(error), data: null };
   }
 };
 
 export default {
-  ACCOUNT_LIST
+  ACCOUNT_INFO
 };
