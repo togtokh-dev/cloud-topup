@@ -1,7 +1,12 @@
 // src/public/order.ts
 import { axiosMasterLogger } from "axios-master";
-import { logAxios, parseErr } from "."; // structure-даа тааруулж "." болгож болно
-import type { OrderT } from "./types";
+import { logAxios, parseErr, queryparam } from "."; // structure-даа тааруулж "." болгож болно
+import type {
+  OrderListFilterT,
+  OrderT,
+  OrderVerifyResT,
+  OrderVerifyT
+} from "./types";
 
 /* ----------------------------- POST /order/verify/:id ----------------------------- */
 // curl --location '.../topup/v1/public/order/verify/:order_id' --data '{ "charge_account":"5737" }'
@@ -10,10 +15,8 @@ export const ORDER_VERIFY = async (
   API_KEY: string,
   LOGGER = false,
   order_id: string,
-  params: {
-    charge_account: string;
-  }
-): Promise<{ success: boolean; message: string; data?: any }> => {
+  params: OrderVerifyT
+): Promise<{ success: boolean; message: string; data?: OrderVerifyResT }> => {
   try {
     const res = await axiosMasterLogger(
       {
@@ -47,13 +50,25 @@ export const ORDER_VERIFY = async (
 export const ORDER_LIST = async (
   HOST: string,
   API_KEY: string,
-  LOGGER = false
-): Promise<{ success: boolean; message: string; data?: OrderT[] }> => {
+  LOGGER = false,
+  params?: OrderListFilterT
+): Promise<{
+  success: boolean;
+  message: string;
+  data?: {
+    orders: OrderT[];
+    total: number;
+    page: number;
+    limit: number;
+  };
+}> => {
   try {
     const res = await axiosMasterLogger(
       {
         method: "GET",
-        url: `${HOST}/topup/v1/public/order`,
+        url: `${HOST}/topup/v1/public/order/?${
+          params ? queryparam(params) : ""
+        }`,
         headers: {
           "x-api-key": API_KEY
         }
@@ -69,9 +84,9 @@ export const ORDER_LIST = async (
       return { success: true, message: res.message, data: res.data };
     }
 
-    return { success: false, message: res?.message || "failed", data: [] };
+    return { success: false, message: res?.message || "failed", data: null };
   } catch (error) {
-    return { success: false, message: parseErr(error), data: [] };
+    return { success: false, message: parseErr(error), data: null };
   }
 };
 
@@ -122,7 +137,7 @@ export const ORDER_CREATE = async (
     order_id: string;
     info?: Record<string, any>;
   }
-): Promise<{ success: boolean; message: string; data?: any }> => {
+): Promise<{ success: boolean; message: string; data?: OrderT }> => {
   try {
     const res = await axiosMasterLogger(
       {

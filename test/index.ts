@@ -71,7 +71,7 @@ async function StartTest() {
   console.log(orders);
 
   const orderUUID =
-    orders.data?.[0]?.id || "a8c0ec4d-e1e1-41fc-a6c9-cdc8f939b8e7";
+    orders.data?.orders[0].id || "a8c0ec4d-e1e1-41fc-a6c9-cdc8f939b8e7";
 
   console.log("====== 🧾 ORDER DETAILS ======");
   const orderDetails = await cloud.order.details(orderUUID);

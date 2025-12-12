@@ -17,7 +17,9 @@ import type {
   RegionT,
   AccountT,
   OrderT,
-  ProductAddItemT
+  ProductAddItemT,
+  OrderListFilterT,
+  OrderVerifyT
 } from "./types";
 
 export interface CloudTopupConfig {
@@ -39,6 +41,12 @@ export function parseErr(error: unknown) {
   }
   return "unexpected error";
 }
+export const queryparam = (data: { [key: string]: any }): string => {
+  return Object.keys(data)
+    .filter((key) => data[key] !== undefined && data[key] !== null)
+    .map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
+    .join("&");
+};
 
 /* ----------------------------- Logger helper ----------------------------- */
 export const logAxios =
@@ -154,15 +162,23 @@ export class CloudTopup {
   order = {
     verify: (
       order_id: string,
-      params: { charge_account: string }
+      params: OrderVerifyT
     ): Promise<{ success: boolean; message: string; data?: any }> =>
       ORDER_VERIFY(this.HOST, this.API_KEY, this.LOGGER, order_id, params),
 
-    list: (): Promise<{
+    list: (
+      params?: OrderListFilterT
+    ): // params: OrderListFilterT
+    Promise<{
       success: boolean;
       message: string;
-      data?: OrderT[];
-    }> => ORDER_LIST(this.HOST, this.API_KEY, this.LOGGER),
+      data?: {
+        orders: OrderT[];
+        total: number;
+        page: number;
+        limit: number;
+      };
+    }> => ORDER_LIST(this.HOST, this.API_KEY, this.LOGGER, params),
 
     details: (
       order_uuid: string
@@ -178,7 +194,7 @@ export class CloudTopup {
       callback: string;
       order_id: string;
       info?: Record<string, any>;
-    }): Promise<{ success: boolean; message: string; data?: any }> =>
+    }): Promise<{ success: boolean; message: string; data?: OrderT }> =>
       ORDER_CREATE(this.HOST, this.API_KEY, this.LOGGER, body)
   };
 }

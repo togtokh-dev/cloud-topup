@@ -90,3 +90,31 @@ export type AccountT = {
     balance: number;
   };
 };
+export type OrderVerifyT = {
+  charge_account: string;
+  charge_password?: string;
+  charge_game?: string;
+  charge_region?: string;
+  charge_server?: string;
+  charge_type?: string;
+};
+export type OrderVerifyResT = {
+  country: string;
+  username: string;
+  info: string;
+  channel: string;
+  productName: string;
+  image: string;
+};
+export type OrderListFilterT = {
+  page?: string;
+  limit?: string;
+  status?:
+    | "created"
+    | "paid"
+    | "pending"
+    | "success"
+    | "failed"
+    | "refund"
+    | "payment-failed";
+};
