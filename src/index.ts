@@ -74,113 +74,112 @@ export class CloudTopup {
   }
 
   /* -------------------------------- PUBLIC APIs -------------------------------- */
-  public = {
-    group: {
-      list: (): Promise<{
-        success: boolean;
-        message: string;
-        data?: GroupT[];
-      }> => GROUP_LIST(this.HOST, this.API_KEY, this.LOGGER),
 
-      info: (
-        group_id: string
-      ): Promise<{ success: boolean; message: string; data?: GroupT }> =>
-        GROUP_INFO(this.HOST, this.API_KEY, this.LOGGER, group_id)
-    },
+  group = {
+    list: (): Promise<{
+      success: boolean;
+      message: string;
+      data?: GroupT[];
+    }> => GROUP_LIST(this.HOST, this.API_KEY, this.LOGGER),
 
-    item: {
-      list: (): Promise<{
-        success: boolean;
-        message: string;
-        data?: ItemT[];
-      }> => ITEM_LIST(this.HOST, this.API_KEY, this.LOGGER),
+    info: (
+      group_id: string
+    ): Promise<{ success: boolean; message: string; data?: GroupT }> =>
+      GROUP_INFO(this.HOST, this.API_KEY, this.LOGGER, group_id)
+  };
 
-      info: (
-        item_id: string
-      ): Promise<{ success: boolean; message: string; data?: ItemT }> =>
-        ITEM_INFO(this.HOST, this.API_KEY, this.LOGGER, item_id),
+  item = {
+    list: (): Promise<{
+      success: boolean;
+      message: string;
+      data?: ItemT[];
+    }> => ITEM_LIST(this.HOST, this.API_KEY, this.LOGGER),
 
-      products: (
-        item_id: string
-      ): Promise<{ success: boolean; message: string; data?: ItemT[] }> =>
-        ITEM_PRODUCTS(this.HOST, this.API_KEY, this.LOGGER, item_id)
-    },
+    info: (
+      item_id: string
+    ): Promise<{ success: boolean; message: string; data?: ItemT }> =>
+      ITEM_INFO(this.HOST, this.API_KEY, this.LOGGER, item_id),
 
-    product: {
-      list: (): Promise<{
-        success: boolean;
-        message: string;
-        data?: ProductT[];
-      }> => PRODUCT_LIST(this.HOST, this.API_KEY, this.LOGGER),
+    products: (
+      item_id: string
+    ): Promise<{ success: boolean; message: string; data?: ItemT[] }> =>
+      ITEM_PRODUCTS(this.HOST, this.API_KEY, this.LOGGER, item_id)
+  };
 
-      info: (
-        product_id: string | number
-      ): Promise<{
-        success: boolean;
-        message: string;
-        data?: ProductT;
-      }> => PRODUCT_INFO(this.HOST, this.API_KEY, this.LOGGER, product_id),
+  product = {
+    list: (): Promise<{
+      success: boolean;
+      message: string;
+      data?: ProductT[];
+    }> => PRODUCT_LIST(this.HOST, this.API_KEY, this.LOGGER),
 
-      info_add_items: (
-        product_id: string | number
-      ): Promise<{
-        success: boolean;
-        message: string;
-        data?: ProductAddItemT;
-      }> => PRODUCT_ITEMS(this.HOST, this.API_KEY, this.LOGGER, product_id)
-    },
+    info: (
+      product_id: string | number
+    ): Promise<{
+      success: boolean;
+      message: string;
+      data?: ProductT;
+    }> => PRODUCT_INFO(this.HOST, this.API_KEY, this.LOGGER, product_id),
 
-    region: {
-      list: (): Promise<{
-        success: boolean;
-        message: string;
-        data?: RegionT[];
-      }> => REGION_LIST(this.HOST, this.API_KEY, this.LOGGER),
+    info_add_items: (
+      product_id: string | number
+    ): Promise<{
+      success: boolean;
+      message: string;
+      data?: ProductAddItemT;
+    }> => PRODUCT_ITEMS(this.HOST, this.API_KEY, this.LOGGER, product_id)
+  };
 
-      info: (
-        region_id: string
-      ): Promise<{ success: boolean; message: string; data?: RegionT }> =>
-        REGION_INFO(this.HOST, this.API_KEY, this.LOGGER, region_id)
-    },
+  region = {
+    list: (): Promise<{
+      success: boolean;
+      message: string;
+      data?: RegionT[];
+    }> => REGION_LIST(this.HOST, this.API_KEY, this.LOGGER),
 
-    account: {
-      list: (): Promise<{
-        success: boolean;
-        message: string;
-        data?: AccountT[];
-      }> => ACCOUNT_LIST(this.HOST, this.API_KEY, this.LOGGER)
-    },
+    info: (
+      region_id: string
+    ): Promise<{ success: boolean; message: string; data?: RegionT }> =>
+      REGION_INFO(this.HOST, this.API_KEY, this.LOGGER, region_id)
+  };
 
-    order: {
-      verify: (
-        order_id: string,
-        params: { charge_account: string }
-      ): Promise<{ success: boolean; message: string; data?: any }> =>
-        ORDER_VERIFY(this.HOST, this.API_KEY, this.LOGGER, order_id, params),
+  account = {
+    list: (): Promise<{
+      success: boolean;
+      message: string;
+      data?: AccountT[];
+    }> => ACCOUNT_LIST(this.HOST, this.API_KEY, this.LOGGER)
+  };
 
-      list: (): Promise<{
-        success: boolean;
-        message: string;
-        data?: OrderT[];
-      }> => ORDER_LIST(this.HOST, this.API_KEY, this.LOGGER),
+  order = {
+    verify: (
+      order_id: string,
+      params: { charge_account: string }
+    ): Promise<{ success: boolean; message: string; data?: any }> =>
+      ORDER_VERIFY(this.HOST, this.API_KEY, this.LOGGER, order_id, params),
 
-      details: (
-        order_uuid: string
-      ): Promise<{
-        success: boolean;
-        message: string;
-        data?: OrderT;
-      }> => ORDER_DETAILS(this.HOST, this.API_KEY, this.LOGGER, order_uuid),
+    list: (): Promise<{
+      success: boolean;
+      message: string;
+      data?: OrderT[];
+    }> => ORDER_LIST(this.HOST, this.API_KEY, this.LOGGER),
 
-      create: (body: {
-        item_id: string;
-        buy_num: number;
-        callback: string;
-        order_id: string;
-        info?: Record<string, any>;
-      }): Promise<{ success: boolean; message: string; data?: any }> =>
-        ORDER_CREATE(this.HOST, this.API_KEY, this.LOGGER, body)
-    }
+    details: (
+      order_uuid: string
+    ): Promise<{
+      success: boolean;
+      message: string;
+      data?: OrderT;
+    }> => ORDER_DETAILS(this.HOST, this.API_KEY, this.LOGGER, order_uuid),
+
+    create: (body: {
+      item_id: string;
+      buy_num: number;
+      callback: string;
+      order_id: string;
+      info?: Record<string, any>;
+    }): Promise<{ success: boolean; message: string; data?: any }> =>
+      ORDER_CREATE(this.HOST, this.API_KEY, this.LOGGER, body)
   };
 }
 
