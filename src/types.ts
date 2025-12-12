@@ -83,5 +83,10 @@ export type OrderT = {
   cards: CardT[];
 };
 export type AccountT = {
-  balance: number;
+  DEFAULT: {
+    balance: number;
+  };
+  NONE_TAX: {
+    balance: number;
+  };
 };
