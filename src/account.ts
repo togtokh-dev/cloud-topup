@@ -26,7 +26,7 @@ export const ACCOUNT_INFO = async (
       }
     );
 
-    if (res?.success && Array.isArray(res.data)) {
+    if (res?.success) {
       return { success: true, message: res.message, data: res.data };
     }
 
