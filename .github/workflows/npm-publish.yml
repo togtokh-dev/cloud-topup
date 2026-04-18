@@ -3,7 +3,7 @@ name: Publish to NPM
 on:
   push:
     branches:
-      - main # Trigger on pushes to the main branch
+      - main
 
 jobs:
   publish:
@@ -12,12 +12,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18 # Specify the Node.js version
+          node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - name: Check NPM Token
@@ -29,27 +29,33 @@ jobs:
             exit 1
           else
             echo "NPM_TOKEN is set"
+            echo "Token length: ${#NPM_TOKEN}"
+            echo "Token prefix: ${NPM_TOKEN:0:4}****"
+            echo "Token suffix: ****${NPM_TOKEN: -4}"
           fi
-
-      - name: Log Sanitized NPM Token
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          echo "NPM_TOKEN starts with: ${NPM_TOKEN:0:5}*****"
 
       - name: Authenticate with NPM
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          echo ".npmrc created successfully"
 
-      - name: Debug .npmrc
-        run: cat ~/.npmrc
+      - name: Verify npm auth setup
+        run: |
+          if [ -f ~/.npmrc ]; then
+            echo ".npmrc exists"
+            sed 's/_authToken=.*/_authToken=****/' ~/.npmrc
+          else
+            echo ".npmrc not found"
+            exit 1
+          fi
 
       - name: Install dependencies
         run: npm install
 
       - name: Build the package
-        run: npm run build # Replace with your build command if needed
+        run: npm run build
 
       - name: Publish the package
         env:
