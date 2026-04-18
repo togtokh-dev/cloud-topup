@@ -9,7 +9,7 @@ export const ACCOUNT_INFO = async (
   HOST: string,
   API_KEY: string,
   LOGGER = false
-): Promise<{ success: boolean; message: string; data?: AccountT }> => {
+): Promise<{ success: boolean; message: string; data: AccountT | null }> => {
   try {
     const res = await axiosMasterLogger(
       {

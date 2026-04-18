@@ -14,6 +14,7 @@ export type ItemT = {
   id: string;
   product_id: string;
   name: string;
+  icon: string;
   face_value: number;
   item_type: "Direct charging" | "Card code";
   price: number;
@@ -25,6 +26,9 @@ export type ItemT = {
 export type ProductT = {
   id: string;
   name: string;
+  icon: string;
+  image: string;
+  desc: string;
   group: string;
   region: string[];
   active: boolean;

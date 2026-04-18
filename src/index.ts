@@ -134,7 +134,7 @@ export class CloudTopup {
     ): Promise<{
       success: boolean;
       message: string;
-      data?: ProductAddItemT;
+      data: ProductAddItemT | null;
     }> => PRODUCT_ITEMS(this.HOST, this.API_KEY, this.LOGGER, product_id)
   };
 
@@ -155,7 +155,7 @@ export class CloudTopup {
     info: (): Promise<{
       success: boolean;
       message: string;
-      data?: AccountT;
+      data: AccountT | null;
     }> => ACCOUNT_INFO(this.HOST, this.API_KEY, this.LOGGER)
   };
 
@@ -172,12 +172,12 @@ export class CloudTopup {
     Promise<{
       success: boolean;
       message: string;
-      data?: {
+      data: {
         orders: OrderT[];
         total: number;
         page: number;
         limit: number;
-      };
+      } | null;
     }> => ORDER_LIST(this.HOST, this.API_KEY, this.LOGGER, params),
 
     details: (

@@ -55,12 +55,12 @@ export const ORDER_LIST = async (
 ): Promise<{
   success: boolean;
   message: string;
-  data?: {
+  data: {
     orders: OrderT[];
     total: number;
     page: number;
     limit: number;
-  };
+  } | null;
 }> => {
   try {
     const res = await axiosMasterLogger(

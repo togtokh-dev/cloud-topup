@@ -77,7 +77,11 @@ export const PRODUCT_ITEMS = async (
   API_KEY: string,
   LOGGER = false,
   product_id: string | number
-): Promise<{ success: boolean; message: string; data?: ProductAddItemT }> => {
+): Promise<{
+  success: boolean;
+  message: string;
+  data: ProductAddItemT | null;
+}> => {
   try {
     const res = await axiosMasterLogger(
       {
